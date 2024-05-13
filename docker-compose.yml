@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+
+  authentication_service:
+    build: ./authentication_service
+    ports:
+      - "5001:5001"
+
+  voting_service:
+    build: ./voting_service
+    ports:
+      - "5002:5002"
+
+  results_service:
+    build: ./results_service
+    ports:
+      - "5003:5003"
+
+  frontend:
+    build: ./client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - authentication_service
+      - voting_service
+      - results_service

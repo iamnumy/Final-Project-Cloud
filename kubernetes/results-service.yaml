@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: results-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: results-service
+  template:
+    metadata:
+      labels:
+        app: results-service
+    spec:
+      containers:
+      - name: results-service
+        image: 058264221459.dkr.ecr.eu-north-1.amazonaws.com/results-service:latest
+        ports:
+        - containerPort: 5003
+        imagePullPolicy: IfNotPresent
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: results-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5003
+      targetPort: 5003
+  selector:
+    app: results-service
+

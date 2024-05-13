@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voting-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: voting-service
+  template:
+    metadata:
+      labels:
+        app: voting-service
+    spec:
+      containers:
+      - name: voting-service
+        image: 058264221459.dkr.ecr.eu-north-1.amazonaws.com/voting-service:latest
+        ports:
+        - containerPort: 5002
+        imagePullPolicy: IfNotPresent
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: voting-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5002
+      targetPort: 5002
+  selector:
+    app: voting-service
